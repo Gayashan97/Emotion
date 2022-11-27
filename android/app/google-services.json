@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "411202416588",
+    "project_id": "emotion-97d5e",
+    "storage_bucket": "emotion-97d5e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:411202416588:android:d2a27c927320908460b769",
+        "android_client_info": {
+          "package_name": "com.gayashan_tharaka.emotion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "411202416588-g3br1m9lsi4b73bk61cuie6h1sgrr4cb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBoHKZzRrHsQP8NGll9fUPYSQZes-KQGbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "411202416588-g3br1m9lsi4b73bk61cuie6h1sgrr4cb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
