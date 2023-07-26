@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:rflutter_alert/rflutter_alert.dart';
 
 class LoginScreen extends StatefulWidget {
   static const id = 'login_screen';
@@ -20,6 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   late String username;
   late String password;
   bool showSpinner = false;
+  late String email;
 
   final _auth = FirebaseAuth.instance;
 
@@ -27,6 +29,39 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() {
       _isHidden = !_isHidden;
     });
+  }
+
+  // Function to show the alert dialog
+  void _showAlertDialog(BuildContext context) {
+    Alert(
+        context: context,
+        title: "RESET PASSWORD",
+        content: TextField(
+          keyboardType: TextInputType.emailAddress,
+          decoration: InputDecoration(
+            icon: Icon(Icons.email),
+            labelText: 'Email',
+          ),
+          onChanged: (value) {
+            email = value;
+          },
+        ),
+        buttons: [
+          DialogButton(
+            onPressed: () async {
+              try {
+                await _auth.sendPasswordResetEmail(email: email);
+              } catch (e) {
+                print(e);
+              }
+              Navigator.pop(context);
+            },
+            child: Text(
+              "SEND EMAIL",
+              style: TextStyle(color: Colors.white, fontSize: 20),
+            ),
+          )
+        ]).show();
   }
 
   @override
@@ -62,7 +97,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     height: 25,
                   ),
                   TextField(
-                    onChanged: (value){
+                    onChanged: (value) {
                       username = value;
                     },
                     decoration: InputDecoration(
@@ -87,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextField(
                     obscureText: _isHidden,
-                    onChanged: (value){
+                    onChanged: (value) {
                       password = value;
                     },
                     decoration: InputDecoration(
@@ -117,23 +152,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-
                   Container(
                     margin: EdgeInsets.only(
                       top: 75,
                       left: 20,
                     ),
                     child: CustomButton(
-                      onPressed: () async{
+                      onPressed: () async {
                         setState(() {
                           showSpinner = true;
                         });
-                        try{
-                          final existingUser = await _auth.signInWithEmailAndPassword(email: username, password: password);
-                          if(existingUser != null){
+                        try {
+                          final existingUser =
+                              await _auth.signInWithEmailAndPassword(
+                                  email: username, password: password);
+                          if (existingUser != null) {
                             Navigator.pushNamed(context, ChatScreen.id);
                           }
-                        }catch(e){
+                        } catch (e) {
                           print(e);
                         }
                         setState(() {
@@ -147,14 +183,19 @@ class _LoginScreenState extends State<LoginScreen> {
                   SizedBox(
                     height: 20,
                   ),
-                  Text(
-                    "FORGOT PASSWORD",
-                    style: GoogleFonts.syncopate(
-                      textStyle: TextStyle(
-                        fontSize: 15,
-                        decoration: TextDecoration.underline,
+                  GestureDetector(
+                    child: Text(
+                      "FORGOT PASSWORD",
+                      style: GoogleFonts.syncopate(
+                        textStyle: TextStyle(
+                          fontSize: 15,
+                          decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
+                    onTap: () {
+                      _showAlertDialog(context);
+                    },
                   ),
                 ],
               ),
